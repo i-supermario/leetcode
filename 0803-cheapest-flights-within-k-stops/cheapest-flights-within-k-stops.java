@@ -17,8 +17,6 @@ class Solution {
 
         while(!q.isEmpty() && k>-1){
             k--;
-            System.out.println("Layer");
-            System.out.println(k);
             int size = q.size();
             int[] dist = og.clone();
             for(int j=0;j<size;j++){
@@ -26,11 +24,8 @@ class Solution {
                 for(int i=0;i<n;i++){
 
                     if(matrix[curr][i]!=Integer.MAX_VALUE && dist[curr] + matrix[curr][i] < og[i]){
-                        System.out.println("Route update");
-                        System.out.println(curr);
-                        System.out.println(i);
+                        
                         og[i] = dist[curr] + matrix[curr][i];
-                        System.out.println(og[i]);
                         q.add(i);
 
                     }
