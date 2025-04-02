@@ -1,41 +1,45 @@
 class Solution {
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-        
-        int[][] matrix = new int[n][n];
-        for(int[] r: matrix) Arrays.fill(r,Integer.MAX_VALUE);
+
+        int[][] grid = new int[n][n];
+
+        for(int[] r: grid) Arrays.fill(r, Integer.MAX_VALUE);
 
         for(int[] f: flights){
-            matrix[f[0]][f[1]] = f[2];
+            grid[f[0]][f[1]] = f[2];
         }
 
-        int[] og = new int[n];
-        Arrays.fill(og, Integer.MAX_VALUE);
+        int[] distance = new int[n];
+        Arrays.fill(distance, Integer.MAX_VALUE);
+        distance[src] = 0;
         Queue<Integer> q = new LinkedList<>();
-
         q.add(src);
-        og[src] = 0;
-
-        while(!q.isEmpty() && k>-1){
-            k--;
+        while(!q.isEmpty() && k > -1){
             int size = q.size();
-            int[] dist = og.clone();
+            int[] temp = distance.clone();
             for(int j=0;j<size;j++){
+
                 int curr = q.poll();
+                
                 for(int i=0;i<n;i++){
 
-                    if(matrix[curr][i]!=Integer.MAX_VALUE && dist[curr] + matrix[curr][i] < og[i]){
+                    if(grid[curr][i] != Integer.MAX_VALUE && temp[curr] + grid[curr][i] < distance[i]){
+
                         
-                        og[i] = dist[curr] + matrix[curr][i];
+                        distance[i] = temp[curr] + grid[curr][i];
                         q.add(i);
 
                     }
 
+
                 }
             }
+            k--;
 
         }
 
-        return og[dst]==Integer.MAX_VALUE ? -1 : og[dst];
+        return distance[dst] != Integer.MAX_VALUE ? distance[dst] : -1; 
 
+        
     }
 }
