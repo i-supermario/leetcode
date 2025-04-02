@@ -1,35 +1,39 @@
 class Solution {
     public int minCostConnectPoints(int[][] points) {
         int m = points.length;
-        int[][] matrix = new int[m][m];
+
+        int[][] grid = new int[m][m];
 
         for(int i=0;i<m;i++){
+            int[] p1 = points[i];
             for(int j=i+1;j<m;j++){
-                matrix[i][j] = Math.abs(points[i][0] - points[j][0] ) + Math.abs(points[i][1] - points[j][1]);
-                matrix[j][i] = matrix[i][j];
+                int[] p2 = points[j];
+                grid[i][j] = Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
+                grid[j][i] = grid[i][j];
+
             }
         }
 
-        PriorityQueue<int[]> q = new PriorityQueue<>((a,b) -> a[1] - b[1]);
-        Set<Integer> visited = new HashSet<>();
+        int cost = 0;
+        boolean[] visited = new boolean[m];
 
+        PriorityQueue<int[]> q = new PriorityQueue<>((a,b) -> (a[1] - b[1]));
         q.add(new int[]{0,0});
-        int total = 0;
-
-        while(!q.isEmpty() && visited.size()!=m){
+        while(!q.isEmpty()){
             int[] curr = q.poll();
-            if(visited.contains(curr[0])) continue;
-            visited.add(curr[0]);
-            total += curr[1];
+            if(visited[curr[0]]) continue;
+            cost += curr[1];
+            visited[curr[0]] = true;
             for(int i=0;i<m;i++){
-                if(!visited.contains(i)){
-                    q.add(new int[]{i, matrix[curr[0]][i]});
+                if(!visited[i]){
+                    q.offer(new int[]{i, grid[curr[0]][i]});
                 }
             }
+
         }
 
+        return cost;
 
-        return total;
-
+        
     }
 }
