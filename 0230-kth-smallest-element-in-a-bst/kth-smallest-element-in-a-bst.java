@@ -16,23 +16,19 @@
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
 
-        PriorityQueue<Integer> q = new PriorityQueue<>();
+        List<Integer> q = new ArrayList<>();
         inorder(root,q);
-        int temp = -1;
-        while(k > 0){
-            temp = q.poll();
-            k--;
-        }
-        return temp;
+        
+        return q.get(k-1);
 
 
         
     }
 
-    void inorder(TreeNode root, PriorityQueue<Integer> q){
+    void inorder(TreeNode root, List<Integer> q){
         if(root == null) return;
         inorder(root.left, q);
-        q.offer(root.val);
+        q.add(root.val);
         inorder(root.right, q);
         return;
 
